@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>Predictions</title>
+<style>
+body {
+	font-family: 'Josefin Sans', sans-serif;
+}
+
+h3 {
+	font-family: 'Josefin Sans', sans-serif;
+}
+
+.box {
+	padding: 60px 0px;
+}
+
+.box-part {
+	background: #fff;
+	border-radius: 10px;
+	padding: 60px 10px;
+	margin: 30px 0px;
+}
+
+.box-part:hover {
+	background: #987124;
+}
+
+.box-part:hover .fa, .box-part:hover .title, .box-part:hover .text,
+	.box-part:hover a {
+	color: #FFF;
+	-webkit-transition: all 1s ease-out;
+	-moz-transition: all 1s ease-out;
+	-o-transition: all 1s ease-out;
+	transition: all 1s ease-out;
+}
+
+.text {
+	margin: 20px 0px;
+	color: black;
+}
+
+.fa {
+	color: #4183D7;
+}
+
+.form-control {
+	background-color: #666;
+}
+
+.form-control {
+	display: inline;
+	width: 50%;
+}
+
+.border {
+	width: 110%;
+	align: center;
+}
+
+.scoreline {
+	display: inline;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content" class="container mySpace">
+		<h1 style="color: white; text-align: center">MAKE YOUR
+			PREDICTIONS BELOW. ONCE MADE THE PREDICTIONS CANT BE CHANGED</h1>
+		<div class="box">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-4 col-md-4 col-md-4 col-xs-12"
+						th:each="fixture:${fixtures}">
+
+						<div class="box-part text-center"
+							style="width: 100%; padding-right: 10%; padding-left: 10%">
+							<div class="title" text-align="center">
+								<h3>
+									<span th:text="${fixture.homeTeam}" class="text" /><span
+										text-align="center" class="text"> V </span><span
+										th:text="${fixture.awayTeam}" class="text" />
+								</h3>
+							</div>
+							<hr></hr>
+							<div>
+								<div style="text-align: center" class="text">Input the
+									score you think it will be down below!</div>
+							</div>
+							<hr></hr>
+							<div>
+								<div style="text-align: center" class="text">Home Team
+									Score V Away Team Score</div>
+							</div>
+							<form th:action="@{/predictionForm}" method="POST"
+								th:object="${prediction}">
+								<input type="hidden" name="fixtureId" th:value="${fixture.id}" />
+								<input type="hidden" name="tournId" th:value="${tournId}" />
+								
+								<div class="alert alert-success" id="alert-prediction-success"
+									role="alert" th:if="${predictionSuccess == fixture.id}">
+									Prediction successful!
+									<script>
+										$("#alert-prediction-success").fadeTo(2000,
+												500).slideUp(
+												500,
+												function() {
+													$("#alert-prediction-success")
+															.slideUp(500);
+												});
+									</script>
+								</div>
+								<div class="row form-group border">
+									<div class="col-sm-5 scoreline">
+										<input type="number" class="form-control" id="homeScore"
+											name="homeScore" placeholder="...">
+									</div>
+									<div>
+										</br> <span class="text" style="text-align: center">Vs</span>
+									</div>
+									<div class="col-sm-5 scoreline">
+										<input type="number" class="form-control" id="awayScore"
+											name="awayScore" placeholder="...">
+									</div>
+								</div>
+								<button type="submit" class="btn btn-lg btn-secondary btn-block">Add
+									Prediction</button>
+								<div class="alert alert-danger" id="alert-prediction-error"
+									role="alert" th:if="${errorPredictionExists == fixture.id}">
+									You have already placed your prediction with this fixture!
+									<script>
+										$("#alert-prediction-error").fadeTo(2000,
+												500).slideUp(
+												500,
+												function() {
+													$("#alert-prediction-error")
+															.slideUp(500);
+												});
+									</script>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<!--  text-align="right"  -->

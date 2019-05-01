@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<title>Index Page</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+
+		<div class="card">
+			<div class="card card-body">
+				<h2>
+					Hello <span th:utext="${name}"/> - Profile Page
+				</h2>
+			</div>
+		</div>
+		</br>
+		<div class="card">
+			<div class="card card-body">
+				<table class="table table-hover table-striped table-bordered">
+					<h3>List of Tournaments You Are Currently Registered In</h3>
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Buy In</th>
+							<th>Prize Pool</th>
+							<th>Player Amount</th>
+							<th>Register</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="tournament:${tournaments}">
+							<td th:text="${tournament.id}"></td>
+							<td th:text="${tournament.name}"></td>
+							<td th:text="${tournament.buyIn}"></td>
+							<td th:text="${tournament.prizePool}"></td>
+							<td th:text="${tournament.playerAmount}"></td>
+							<td><a th:href="@{/viewTournament(id=${tournament.id})}"
+								class="btn btn-dark">View Tournament</a></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

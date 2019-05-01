@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Top Up Account</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+		<div class="jumbotron jumbotron-fluid">
+			<div class="container">
+				<h2>
+					Your current balance is: &euro;<span th:utext="${balance}"></span>
+				</h2>
+			</div>
+		</div>
+		<form th:action="@{/topup}" method="post">
+			<div class="form-group">
+				<label for="amount" class="form-control-label" style="color: white;">Top
+					Up Amount</label> <input type="number" class="form-control" name="amount"
+					id="amount" />
+			</div>
+			<script src="https://checkout.stripe.com/checkout.js"
+				class="stripe-button"
+				data-key="pk_test_YzdQ1afj3wSVXfvqXMsw7nZO00ntiTo7xK"
+				data-amount=data-name="GuessGuru"
+				data-description="Top up your account now!"
+				data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+				data-locale="auto" data-currency="eur">
+				
+			</script>
+
+		</form>
+
+	</div>
+</body>
+</html>

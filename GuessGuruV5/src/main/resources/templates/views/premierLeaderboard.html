@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Premier Leaderboard</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+	     <form action="/standings" class="form-inline">
+	     </form>
+		<div class="card">
+			<div class="card card-body">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Position</th>
+							<th>Team</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="standing:${standings}">
+							<td th:text="${standing.position}"></td>
+							<td th:text="${standing.name}"></td>
+							<td th:text="${standing.points}"></td>
+
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

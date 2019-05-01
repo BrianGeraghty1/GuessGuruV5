@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<title>Index Page</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+		<form action="/tournaments" class="form-inline">
+			<div class="form-group mb-2">
+				<input type="text" class="form-control form-control-plaintext"
+					name="name" placeholder="Search Tournaments" /> <input
+					type="submit" value="Search" class="btn btn-default" />
+			</div>
+		</form>
+		<div class="card">
+			<div class="card card-body">
+				<div class="alert alert-danger" id="alert-prediction-error"
+					role="alert" th:if="${errorPredictionExists}">
+					You can only make predictions in tournaments you are registered! Register for one here.
+					<script>
+						$("#alert-prediction-error").fadeTo(2000, 500)
+					</script>
+				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Buy In</th>
+							<th>Prize Pool</th>
+							<th>Player Amount</th>
+							<th>Register</th>
+							<th>View</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="tournament:${tournaments}">
+							<td th:text="${tournament.id}"></td>
+							<td th:text="${tournament.name}"></td>
+							<td th:text="${tournament.buyIn}"></td>
+							<td th:text="${tournament.prizePool}"></td>
+							<td th:text="${tournament.playerAmount}"></td>
+							<td><a th:href="@{/addTournamentUser(id=${tournament.id})}"
+								class="btn btn-dark">Register</a></td>
+							<td><a th:href="@{/viewTournament(id=${tournament.id})}"
+								class="btn btn-dark">View Tournament</a></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

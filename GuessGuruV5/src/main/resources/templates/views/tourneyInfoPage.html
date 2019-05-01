@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<title>Tournament Players</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+		<div class="jumbotron jumbotron-fluid">
+			<div class="container">
+				<h2 class="display-4">
+					<span th:utext="${tournamentName}"></span>
+				</h2>
+				<p class="lead">
+					Tournament Prize Pool: &euro;<span th:utext="${prizePool}"></span>
+				</p>
+				<p class="lead">
+					Amount of players currently registered: <span
+						th:utext="${playerAmount}"></span>
+				</p>
+				<p class="lead">
+					Total Buy In: &euro;<span th:utext="${buyIn}"></span>
+				</p>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card card-body">
+				<table class="table table-hover">
+					<h3>List of Registered Players</h3>
+					<thead>
+						<tr>
+							<th>Email</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user:${users}">
+							<td th:text="${user.email}"></td>
+							<td th:text="${user.name}"></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+		</br>
+		<div class="card">
+			<div class="card card-body">
+				<table class="table table-hover table-striped table-bordered">
+					<h3>Tournament Fixtures</h3>
+					<thead class="thead-dark">
+						<tr>
+							<th>Home Team</th>
+							<th style="text-align: center">Home Goals</th>
+							<th></th>
+							<th style="text-align: center">Away Goals</th>
+							<th>Away Team</th>
+							<th data-defaultsign="month">Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="fixture:${fixtures}">
+							<td th:text="${fixture.homeTeam}"></td>
+							<td th:text="${fixture.homeScore}" style="text-align: center"></td>
+							<td style="text-align: center">V</td>
+							<td th:text="${fixture.awayScore}" style="text-align: center"></td>
+							<td th:text="${fixture.awayTeam}"></td>
+							<td data-dateformat="YYYY-MM-DD" th:text="${fixture.date}"></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+		</br>
+		<div class="card">
+			<div class="card-header">Make Prediction</div>
+			<div class="card-body">
+				<h5 class="card-title">Base your predictions on the list of fixtures above.</h5>
+				<p class="card-text">Make sure you get your predictions in before the first game!</p>
+				<a 	class="btn btn-dark" th:href="@{/predictionForm(id=${tournamentId})}">Make your predictions</a> 
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

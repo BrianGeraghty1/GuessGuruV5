@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+<head>
+<title>Index Page</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mySpace">
+		<div
+			class="jumbotron text-center mdb-color lighten-2 white-text mx-2 mb-5">
+			<h2>Are you sure you want to register for this tournament?</h2>
+		</div>
+		<form th:action="@{/addTournamentUser}" th:object="${tournament}"
+			method="post">
+			<div class="btn-group btn-group-lg" role="group"
+				aria-label="Basic example">
+				<button type="submit" href="/addTournamentUser(id=${tournament.id})"
+					class="btn btn-secondary">
+					Confirm <i class="fas fa-check"></i>
+				</button>
+				<!-- <button type="submit" href="/profile"class="btn btn-secondary">Cancel <i class="fas fa-ban"></i></button> -->
+			</div>
+		</form>
+		</br>
+		<form th:action="@{/profile}">
+			<div class="btn-group btn-group-lg" role="group"
+				aria-label="Basic example">
+				<button type="submit" href="/profile"class="btn btn-secondary">Cancel <i class="fas fa-ban"></i></button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
