@@ -49,17 +49,25 @@ h3 {
 }
 
 .form-control {
-	background-color: #666;
+	background-color: #987124;
+	font-color:black;
 }
-
+.row {
+	
+}
 .form-control {
 	display: inline;
 	width: 50%;
 }
 
 .border {
-	width: 110%;
+	 width: 110%; 
 	align: center;
+	background-color: #987124;
+	border-radius: 25px;
+    border: 2px solid #609;
+    padding: 20px; 
+    height: 90px; 
 }
 
 .scoreline {
@@ -71,7 +79,7 @@ h3 {
 <body>
 	<div layout:fragment="content" class="container mySpace">
 		<h1 style="color: white; text-align: center">MAKE YOUR
-			PREDICTIONS BELOW. ONCE MADE THE PREDICTIONS CANT BE CHANGED</h1>
+			PREDICTIONS BELOW.</h1>
 		<div class="box">
 			<div class="container">
 				<div class="row">
@@ -102,46 +110,52 @@ h3 {
 								th:object="${prediction}">
 								<input type="hidden" name="fixtureId" th:value="${fixture.id}" />
 								<input type="hidden" name="tournId" th:value="${tournId}" />
-								
+
 								<div class="alert alert-success" id="alert-prediction-success"
 									role="alert" th:if="${predictionSuccess == fixture.id}">
 									Prediction successful!
 									<script>
-										$("#alert-prediction-success").fadeTo(2000,
-												500).slideUp(
-												500,
-												function() {
-													$("#alert-prediction-success")
-															.slideUp(500);
-												});
+										$("#alert-prediction-success").fadeTo(
+												2000, 500)
+									</script>
+								</div>
+								<div class="alert alert-success" id="alert-updated-success"
+									role="alert" th:if="${predictionUpdated == fixture.id}">
+									Prediction updated!
+									<script>
+										$("#alert-updated-success").fadeTo(
+												2000, 500)
 									</script>
 								</div>
 								<div class="row form-group border">
 									<div class="col-sm-5 scoreline">
-										<input type="number" class="form-control" id="homeScore"
-											name="homeScore" placeholder="...">
+										<input type="number" min = 0 class="form-control" id="homeScore"
+											name="homeScore" value=0>
 									</div>
 									<div>
 										</br> <span class="text" style="text-align: center">Vs</span>
 									</div>
 									<div class="col-sm-5 scoreline">
-										<input type="number" class="form-control" id="awayScore"
-											name="awayScore" placeholder="...">
+										<input type="number" min=0 class="form-control" id="awayScore"
+											name="awayScore" value=0>
 									</div>
 								</div>
 								<button type="submit" class="btn btn-lg btn-secondary btn-block">Add
 									Prediction</button>
 								<div class="alert alert-danger" id="alert-prediction-error"
-									role="alert" th:if="${errorPredictionExists == fixture.id}">
-									You have already placed your prediction with this fixture!
+									role="alert" th:if="${errorPrediction == fixture.id}">
+									A score cannot be a negative!
 									<script>
-										$("#alert-prediction-error").fadeTo(2000,
-												500).slideUp(
-												500,
-												function() {
-													$("#alert-prediction-error")
-															.slideUp(500);
-												});
+										$("#alert-prediction-error")
+												.fadeTo(2000, 500)
+												.slideUp(
+														500,
+														function() {
+															$(
+																	"#alert-prediction-error")
+																	.slideUp(
+																			500);
+														});
 									</script>
 								</div>
 							</form>

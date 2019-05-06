@@ -21,6 +21,9 @@ public class Prediction {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_EMAIL")
 	private User user;
+	/*@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "POINTS_ID")
+	private Points points;*/
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIXTURE_ID")
 	private Fixture fixture;

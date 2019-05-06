@@ -70,15 +70,20 @@ public class PredictionController {
 		Tournament tournament = tournamentService.getTournament(tournId);
 		Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
 		Fixture fixture = fixtureService.findById(fixtureId);
+		int homeScore = Integer.parseInt(request.getParameter("homeScore"));
+		int awayScore = Integer.parseInt(request.getParameter("awayScore"));
 		if (predictionService.checkPredictions(user, fixtureId)) {
-				String errorPredictionExists = fixture.getId();
-				model.addAttribute("errorPredictionExists", errorPredictionExists);
+				Prediction prediction = predictionService.findExistingPredictionFromUser(user, fixture);
+				
+				prediction.setHomeTeamScore(homeScore);
+				prediction.setAwayTeamScore(awayScore);
+				predictionService.savePrediction(prediction);
+				String predictionUpdated = fixture.getId();
+				model.addAttribute("predictionUpdated", predictionUpdated);
 				model.addAttribute("fixtures", fixtures);
 				model.addAttribute("tournId", tournId);
 				return "views/predictionForm";
 		}
-		int homeScore = Integer.parseInt(request.getParameter("homeScore"));
-		int awayScore = Integer.parseInt(request.getParameter("awayScore"));
 		Prediction prediction = new Prediction(homeScore, awayScore, user, fixture, tournament);
 		predictionService.savePrediction(prediction);
 		String predictionSuccess = fixture.getId();

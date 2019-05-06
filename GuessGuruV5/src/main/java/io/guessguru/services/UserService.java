@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import io.guessguru.entities.Role;
+import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.repositories.UserRepository;
 
@@ -59,6 +60,10 @@ public class UserService {
 			return true;
 		
 		return false;
+	}
+	
+	public List<User> findByTournament(Tournament tournament) {
+		return userRepository.findByTournaments(tournament);
 	}
 
 	public List<User> findAll() {

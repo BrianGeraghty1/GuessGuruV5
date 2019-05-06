@@ -32,7 +32,9 @@ public class TournamentController {
 	private UserService userService;
 	@Autowired
 	private FixtureService fixtureService;
-
+	@Autowired
+	private PointsController pointsController;
+	
 	@GetMapping("/tournaments")
 	public String listUsers(Model model, @RequestParam(defaultValue = "") String name) {
 		model.addAttribute("tournaments", tournamentService.findByName(name));
@@ -92,9 +94,10 @@ public class TournamentController {
 
 	@GetMapping("/viewTournament")
 	public String showTournamentPage(Session session, Model model, @RequestParam(name = "id") String tournamentId) {
-
+		
 		Long tournId = Long.parseLong(tournamentId);
 		Tournament tournament = tournamentService.getTournament(tournId);
+		pointsController.compareResults(tournament);
 		Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
 		model.addAttribute("fixtures", fixtures);
 		model.addAttribute("tournamentId", tournId);

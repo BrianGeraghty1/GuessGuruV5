@@ -34,12 +34,22 @@ public class User {
 	private Set<Tournament> tournaments = new HashSet<Tournament>();
 	@OneToMany(mappedBy = "user")
 	private List<Prediction> predictions;
+	@OneToMany(mappedBy = "user")
+	private List<Points> points;
 
 	@JoinTable(name = "USER_ROLES", joinColumns = {
 			@JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = {
 					@JoinColumn(name = "ROLE_NAME", referencedColumnName = "name") })
 	@ElementCollection(targetClass = Role.class)
 	private List<Role> roles;
+
+	public List<Points> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Points> points) {
+		this.points = points;
+	}
 
 	public List<Prediction> getPredictions() {
 		return predictions;

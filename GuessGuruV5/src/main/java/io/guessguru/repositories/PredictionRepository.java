@@ -13,5 +13,6 @@ public interface PredictionRepository extends JpaRepository<Prediction, Integer>
 	
 	List<Prediction> findByUser(User user);
 	List<Prediction> findByTournament(Tournament tournament);
-
+	Prediction findByUserAndFixture(User user, Fixture fixture);
+	List<Prediction> findByTournamentAndUser(Tournament tournament, User user);
 }

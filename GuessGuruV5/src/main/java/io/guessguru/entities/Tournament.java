@@ -44,6 +44,8 @@ public class Tournament {
 	private Set<Fixture> fixtures = new HashSet<Fixture>();
 	@OneToMany(mappedBy = "tournament")
 	private List<Prediction> predictions;
+	@OneToMany(mappedBy = "tournament")
+	private List<Points> points;
 	
 
 	public List<Prediction> getPredictions() {

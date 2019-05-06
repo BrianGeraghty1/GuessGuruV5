@@ -1,5 +1,6 @@
 package io.guessguru.services;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -41,17 +42,23 @@ public class TournamentService {
 	}
 	
 	public boolean isUserPresent(User user, Tournament tournament) {
-		List<User> usersRegistered = (List<User>) tournament.getUsers();
+		Set<User> usersRegistered =  tournament.getUsers();
 		boolean present=false;
-		for(int i=0; i<usersRegistered.size(); i++) {
-			if (usersRegistered.get(i).equals(user)) {
+		for(Iterator<User> it=usersRegistered.iterator(); it.hasNext();) {
+			User user2 = it.next();
+			if (user.getEmail().equalsIgnoreCase(user2.getEmail())) {
+				present = true;
+			}
+		}
+	/*	for(int i=0; i<usersRegistered.size(); i++) {
+			if (usersRegistered.getClass().) {
 				present = true;
 			}
 			else {
 				present= false;
 			}
 			
-		}
+		}*/
 		return present;
 	}
 	

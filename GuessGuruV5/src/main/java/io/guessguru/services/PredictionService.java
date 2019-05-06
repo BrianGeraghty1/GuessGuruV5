@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.guessguru.entities.Fixture;
 import io.guessguru.entities.Prediction;
+import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.repositories.PredictionRepository;
 
@@ -30,5 +32,11 @@ public class PredictionService {
 		}
 		return exists;
 	}
-
+	public Prediction findExistingPredictionFromUser(User user, Fixture fixture) {
+		return predictionRepository.findByUserAndFixture(user, fixture);
+	}
+	
+	public List<Prediction> findPredictionsByUserAndTournament(Tournament tournament, User user) {
+		return predictionRepository.findByTournamentAndUser(tournament, user);
+	}
 }
