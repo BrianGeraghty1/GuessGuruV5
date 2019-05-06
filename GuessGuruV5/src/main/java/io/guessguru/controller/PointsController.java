@@ -53,6 +53,7 @@ public class PointsController {
 				int fixtureAwayScore = fixture.getAwayScore();
 				int predictedHomeScore = prediction.getHomeTeamScore();
 				int predictedAwayScore = prediction.getAwayTeamScore();
+				if(fixture.getMatchPlayed()==1) {
 				if((compareTo(predictedHomeScore, predictedAwayScore)==compareTo(fixtureHomeScore, fixtureAwayScore))) {
 					
 					if((predictedHomeScore==fixtureHomeScore) && (predictedAwayScore==fixtureAwayScore)) {
@@ -61,6 +62,7 @@ public class PointsController {
 					else {
 						userTotal+=1;
 					}
+				}
 				}
 			}
 			if(pointsService.checkPoints(users.get(i), tournament)) {
