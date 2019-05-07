@@ -47,6 +47,26 @@ public class Tournament {
 	@OneToMany(mappedBy = "tournament")
 	private List<Points> points;
 	
+	private int active;
+	
+	
+	
+
+	public List<Points> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Points> points) {
+		this.points = points;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
 
 	public List<Prediction> getPredictions() {
 		return predictions;
@@ -124,6 +144,7 @@ public class Tournament {
 		this.name = name;
 		this.buyIn = buyIn;
 		this.gameweek = gameweek;
+		this.active=0;
 	}
 
 	public Tournament() {

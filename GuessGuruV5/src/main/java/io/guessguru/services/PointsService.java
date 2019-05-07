@@ -26,6 +26,10 @@ public class PointsService {
 		return pointsRepository.findByTournamentAndUser(tournament, user);
 	}
 	
+	public List<Points> findByTournament(Tournament tournament) {
+		return pointsRepository.findByTournamentOrderByTotalDesc(tournament);
+	}
+	
 	public boolean checkPoints(User user, Tournament tournament) {
 		boolean exists = false;
 		List<Points> tournamentPoints = pointsRepository.findByTournament(tournament);

@@ -41,6 +41,10 @@ public class TournamentService {
 		return tournamentRepository.getOne(tournamentId);
 	}
 	
+	public void saveTournament(Tournament tournament) {
+		tournamentRepository.save(tournament);
+	}
+	
 	public boolean isUserPresent(User user, Tournament tournament) {
 		Set<User> usersRegistered =  tournament.getUsers();
 		boolean present=false;
@@ -50,15 +54,6 @@ public class TournamentService {
 				present = true;
 			}
 		}
-	/*	for(int i=0; i<usersRegistered.size(); i++) {
-			if (usersRegistered.getClass().) {
-				present = true;
-			}
-			else {
-				present= false;
-			}
-			
-		}*/
 		return present;
 	}
 	
@@ -71,6 +66,11 @@ public class TournamentService {
 	public List<Tournament> findByName(String name) {
 		// TODO Auto-generated method stub
 		return  tournamentRepository.findByNameLike("%"+name+"%");
+	}
+	
+	public List<Tournament> findByActive() {
+		// TODO Auto-generated method stub
+		return  tournamentRepository.findByActive(0);
 	}
 	
 }

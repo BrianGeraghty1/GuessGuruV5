@@ -1,5 +1,6 @@
 package io.guessguru.controller;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -46,8 +47,19 @@ public class PredictionController {
 		User user = userService.findOne(auth.getName());
 		Long tournId = Long.parseLong(id);
 		Tournament tournament = tournamentService.getTournament(tournId);
+		Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
+		boolean present=false;
+		for(Iterator<Fixture> it=fixtures.iterator(); it.hasNext();) {
+			Fixture fix = it.next();
+			if (fix.getMatchPlayed()==1) {
+				String errorStarted = "";
+				model.addAttribute("errorStarted", errorStarted);
+				return "views/alreadyStarted";
+			}
+		}
+		
 		if(tournamentService.isUserPresent(user, tournament)) {
-			Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
+			
 			model.addAttribute("fixtures", fixtures);
 			model.addAttribute("tournId", tournId);
 			return "views/predictionForm";

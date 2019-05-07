@@ -12,4 +12,6 @@ public interface TournamentRepository  extends JpaRepository<Tournament, Long> {
 	List<Tournament> findByNameLike(String name);
 	/*List<User> findAllRegistered(Tournament tournament);*/
 
+	//List<Tournament> findByActiveAndNameLikeAnd(int active,String string);
+	List<Tournament> findByActive(int active);
 }

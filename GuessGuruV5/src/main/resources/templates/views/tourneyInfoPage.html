@@ -28,17 +28,19 @@
 		<div class="card">
 			<div class="card card-body">
 				<table class="table table-hover">
-					<h3>List of Registered Players</h3>
+					<h3>Leaderboard of Registered Players</h3>
 					<thead>
 						<tr>
-							<th>Email</th>
+							<th>Position</th>
 							<th>Name</th>
+							<th>Total Points</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="user:${users}">
-							<td th:text="${user.email}"></td>
-							<td th:text="${user.name}"></td>
+						<tr th:each="points, listPos : ${points}">
+							<td th:text="${listPos.count}"></td>
+							<td th:text="${points.user?.name}"></td>
+							<td th:text="${points.total}"></td>
 						</tr>
 					</tbody>
 
@@ -78,10 +80,14 @@
 		<div class="card">
 			<div class="card-header">Make Prediction</div>
 			<div class="card-body">
-				<h5 class="card-title">Base your predictions on the list of fixtures above.</h5>
-				<p class="card-text">Make sure you get your predictions in before the first game!</p>
-				<a 	class="btn btn-dark" th:href="@{/predictionForm(id=${tournamentId})}">Make your predictions</a> 
-				
+				<h5 class="card-title">Base your predictions on the list of
+					fixtures above.</h5>
+				<p class="card-text">Make sure you get your predictions in
+					before the first game!</p>
+				<a class="btn btn-dark"
+					th:href="@{/predictionForm(id=${tournamentId})}">Make your
+					predictions</a>
+
 			</div>
 		</div>
 	</div>

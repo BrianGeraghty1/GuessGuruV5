@@ -13,6 +13,7 @@ import io.guessguru.entities.User;
 public interface PointsRepository extends JpaRepository<Points, Integer> {
 	
 	List<Points> findByUser(User user);
-	List<Points> findByTournament(Tournament tournament);
+	List<Points> findByTournamentOrderByTotalDesc(Tournament tournament);
 	Points findByTournamentAndUser(Tournament tournament, User user);
+	List<Points> findByTournament(Tournament tournament);
 }

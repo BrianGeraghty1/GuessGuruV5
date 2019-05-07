@@ -1,5 +1,6 @@
 package io.guessguru.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import io.guessguru.entities.Fixture;
+import io.guessguru.entities.Points;
 import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.services.FixtureService;
+import io.guessguru.services.PointsService;
 import io.guessguru.services.TournamentService;
 import io.guessguru.services.UserService;
 
@@ -33,11 +36,13 @@ public class TournamentController {
 	@Autowired
 	private FixtureService fixtureService;
 	@Autowired
+	private PointsService pointsService;
+	@Autowired
 	private PointsController pointsController;
 	
 	@GetMapping("/tournaments")
-	public String listUsers(Model model, @RequestParam(defaultValue = "") String name) {
-		model.addAttribute("tournaments", tournamentService.findByName(name));
+	public String listUsers(Model model) {
+		model.addAttribute("tournaments", tournamentService.findByActive());
 		return "views/tournamentList";
 	}
 
@@ -67,7 +72,6 @@ public class TournamentController {
 		session.setAttribute("tournament", tournament2);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		session.setAttribute("email", auth.getName());
-		System.out.println(tournament2.getName());
 		return "views/regTournConfirmation";
 
 	}
@@ -97,9 +101,29 @@ public class TournamentController {
 		
 		Long tournId = Long.parseLong(tournamentId);
 		Tournament tournament = tournamentService.getTournament(tournId);
-		pointsController.compareResults(tournament);
+		List<Points> points = pointsService.findByTournament(tournament);
 		Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
 		model.addAttribute("fixtures", fixtures);
+		boolean finished = true;
+		for (Fixture fixJ:fixtures) {
+			if(fixJ.getMatchPlayed()!=1) {
+				finished=false;
+			}
+			
+		}
+		if (finished&& tournament.getActive()==0) {
+			User winner = points.get(0).getUser();
+			User runnerUp = points.get(1).getUser();
+			winner.setBalance(winner.getBalance()+ ((tournament.getPrizePool()*(0.75))));
+			runnerUp.setBalance(runnerUp.getBalance()+ ((tournament.getPrizePool()*(0.25))));
+			userService.saveUser(winner);
+			userService.saveUser(runnerUp);
+			tournament.setActive(1);
+			tournamentService.saveTournament(tournament);
+		}
+		pointsController.compareResults(tournament);
+		
+		model.addAttribute("points", points);
 		model.addAttribute("tournamentId", tournId);
 		model.addAttribute("tournamentName", tournament.getName());
 		model.addAttribute("users", tournament.getUsers());

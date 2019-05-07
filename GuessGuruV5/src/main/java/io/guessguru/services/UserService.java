@@ -62,6 +62,10 @@ public class UserService {
 		return false;
 	}
 	
+	public void saveUser(User user) {
+		userRepository.save(user);
+	}
+	
 	public List<User> findByTournament(Tournament tournament) {
 		return userRepository.findByTournaments(tournament);
 	}
