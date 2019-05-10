@@ -18,16 +18,13 @@ public class Prediction {
 	private Long id;
 	private int homeTeamScore;
 	private int awayTeamScore;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_EMAIL")
 	private User user;
-	/*@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "POINTS_ID")
-	private Points points;*/
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FIXTURE_ID")
 	private Fixture fixture;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TOURNAMENT_ID")
 	private Tournament tournament;
 

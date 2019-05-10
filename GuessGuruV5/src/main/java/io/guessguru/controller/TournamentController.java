@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.guessguru.entities.Fixture;
 import io.guessguru.entities.Points;
+import io.guessguru.entities.PreviousBalance;
 import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.services.FixtureService;
 import io.guessguru.services.PointsService;
+import io.guessguru.services.PreviousBalanceService;
 import io.guessguru.services.TournamentService;
 import io.guessguru.services.UserService;
 
@@ -37,6 +39,8 @@ public class TournamentController {
 	private FixtureService fixtureService;
 	@Autowired
 	private PointsService pointsService;
+	@Autowired
+	private PreviousBalanceService previousBalanceService;
 	@Autowired
 	private PointsController pointsController;
 	
@@ -81,7 +85,7 @@ public class TournamentController {
 		
 		String email = (String) session.getAttribute("email");
 		Tournament tournament = (Tournament) session.getAttribute("tournament");
-
+		
 		User user = userService.findOne(email);
 		if(user.getBalance()<tournament.getBuyIn()) {
 			return "views/topUp";
@@ -114,6 +118,10 @@ public class TournamentController {
 		if (finished&& tournament.getActive()==0) {
 			User winner = points.get(0).getUser();
 			User runnerUp = points.get(1).getUser();
+			PreviousBalance balance = new PreviousBalance(winner, winner.getBalance());
+			previousBalanceService.savePreviousBalance(balance);
+			PreviousBalance balance2 = new PreviousBalance(runnerUp, runnerUp.getBalance());
+			previousBalanceService.savePreviousBalance(balance);
 			winner.setBalance(winner.getBalance()+ ((tournament.getPrizePool()*(0.75))));
 			runnerUp.setBalance(runnerUp.getBalance()+ ((tournament.getPrizePool()*(0.25))));
 			userService.saveUser(winner);

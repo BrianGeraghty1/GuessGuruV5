@@ -19,26 +19,14 @@ public class Points {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_EMAIL")
 	private User user;
-	/*@OneToMany(mappedBy = "points")
-	private List<Prediction> predictions;*/
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TOURNAMENT_ID")
 	private Tournament tournament;
 	private int total;
 
-	
-	 
-
-/*	public List<Prediction> getPredictions() {
-		return predictions;
-	}
-
-	public void setPredictions(List<Prediction> predictions) {
-		this.predictions = predictions;
-	}*/
 
 	public int getTotal() {
 		return total;

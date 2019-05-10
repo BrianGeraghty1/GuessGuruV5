@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.guessguru.controller.FixtureController;
+import io.guessguru.entities.PreviousBalance;
 import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.repositories.TournamentRepository;
@@ -22,7 +23,8 @@ public class TournamentService {
 	private TournamentRepository tournamentRepository;
 	@Autowired
 	private FixtureController fixtureController;
-	
+	@Autowired
+	private PreviousBalanceService previousBalanceService;
 	public void createTournament(Tournament tournament) {
 		tournament.setFixtures(fixtureController.parseFixtureList(tournament.getGameweek()));
 		tournamentRepository.save(tournament);
@@ -32,6 +34,8 @@ public class TournamentService {
 		tournament.registerNewUser(user);
 		tournament.setPlayerAmount(tournament.getPlayerAmount()+1);
 		tournament.setPrizePool(tournament.getPrizePool()+tournament.getBuyIn());
+		PreviousBalance balance = new PreviousBalance(user, user.getBalance());
+		previousBalanceService.savePreviousBalance(balance);
 		user.setBalance(user.getBalance()-tournament.getBuyIn());
 		userRepository.save(user);
 		tournamentRepository.save(tournament);

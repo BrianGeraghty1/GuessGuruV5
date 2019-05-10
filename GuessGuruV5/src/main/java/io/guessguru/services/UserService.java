@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.guessguru.entities.PreviousBalance;
 import io.guessguru.entities.Role;
 import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
@@ -17,6 +18,9 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PreviousBalanceService previousBalanceService;
 	
 	public void createUser(User user) {
 		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
@@ -44,11 +48,15 @@ public class UserService {
 	}
 	
 	public void topUpAccount(User user, double amount) {
+		PreviousBalance balance = new PreviousBalance(user, user.getBalance());
+		previousBalanceService.savePreviousBalance(balance);
 		user.setBalance(user.getBalance()+amount);
 		userRepository.save(user);
 	}
 	
 	public void withdrawAccount(User user, double amount) {
+		PreviousBalance balance = new PreviousBalance(user, user.getBalance());
+		previousBalanceService.savePreviousBalance(balance);
 		user.setBalance(user.getBalance()-amount);
 		userRepository.save(user);
 	}

@@ -1,5 +1,6 @@
 package io.guessguru.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +37,8 @@ public class User {
 	private List<Prediction> predictions;
 	@OneToMany(mappedBy = "user")
 	private List<Points> points;
+	@OneToMany(mappedBy = "user")
+	private List<PreviousBalance> previousBalances;
 
 	@JoinTable(name = "USER_ROLES", joinColumns = {
 			@JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = {
@@ -111,7 +114,18 @@ public class User {
 		this.email = email;
 		this.name = name;
 		this.password = password;
+		this.previousBalances = new ArrayList<>();
 	}
+
+	
+	public List<PreviousBalance> getPreviousBalances() {
+		return previousBalances;
+	}
+
+	public void setPreviousBalances(List<PreviousBalance> previousBalances) {
+		this.previousBalances = previousBalances;
+	}
+	
 
 	public User() {
 
