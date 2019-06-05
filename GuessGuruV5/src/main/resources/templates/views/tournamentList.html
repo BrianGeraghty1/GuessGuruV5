@@ -12,9 +12,19 @@
 			<div class="card card-body">
 				<div class="alert alert-danger" id="alert-prediction-error"
 					role="alert" th:if="${errorPredictionExists}">
-					You can only make predictions in tournaments you are registered! Register for one here.
+					You can only make predictions in tournaments you are registered!
+					Register for one here.
 					<script>
 						$("#alert-prediction-error").fadeTo(2000, 500)
+					</script>
+				</div>
+				<div class="alert alert-danger" id="alert-register-error"
+					role="alert" th:if="${alreadyRegistered}">
+					You are already registered in this tournament! Check out some of our other tournaments here.
+					<script>
+						$("#alert-register-error").fadeTo(2000, 500).slideUp(500, function(){
+							$("#alert-register-error").slideUp(500);
+						});
 					</script>
 				</div>
 				<table class="table table-hover table-striped table-bordered">
@@ -25,8 +35,8 @@
 							<th>Buy In</th>
 							<th>Prize Pool</th>
 							<th>Player Amount</th>
-							<th>Register</th>
 							<th>View</th>
+							<th sec:authorize="hasRole('ROLE_USER')">Register</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -36,10 +46,11 @@
 							<td th:text="${tournament.buyIn}"></td>
 							<td th:text="${tournament.prizePool}"></td>
 							<td th:text="${tournament.playerAmount}"></td>
-							<td><a th:href="@{/addTournamentUser(id=${tournament.id})}"
-								class="btn btn-dark">Register</a></td>
 							<td><a th:href="@{/viewTournament(id=${tournament.id})}"
 								class="btn btn-dark">View Tournament</a></td>
+							<td><a th:href="@{/addTournamentUser(id=${tournament.id})}"
+								class="btn btn-dark" sec:authorize="hasRole('ROLE_USER')">Register</a></td>
+
 						</tr>
 					</tbody>
 

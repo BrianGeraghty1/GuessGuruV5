@@ -23,6 +23,7 @@ import io.guessguru.entities.PreviousBalance;
 import io.guessguru.entities.Tournament;
 import io.guessguru.entities.User;
 import io.guessguru.services.FixtureService;
+import io.guessguru.services.MailService;
 import io.guessguru.services.PointsService;
 import io.guessguru.services.PreviousBalanceService;
 import io.guessguru.services.TournamentService;
@@ -39,6 +40,8 @@ public class TournamentController {
 	private FixtureService fixtureService;
 	@Autowired
 	private PointsService pointsService;
+	@Autowired
+	private MailService mailService;
 	@Autowired
 	private PreviousBalanceService previousBalanceService;
 	@Autowired
@@ -81,11 +84,16 @@ public class TournamentController {
 	}
 
 	@PostMapping("/addTournamentUser")
-	public String registerTournamentUser(HttpSession session) {
+	public String registerTournamentUser(HttpSession session, Model model) {
 		
 		String email = (String) session.getAttribute("email");
 		Tournament tournament = (Tournament) session.getAttribute("tournament");
-		
+		if(tournamentService.isUserPresent(userService.findOne(email), tournament)) {
+			model.addAttribute("tournaments", tournamentService.findByActive());
+			model.addAttribute("alreadyRegistered", "");
+			return "views/tournamentList";
+		}
+		else {
 		User user = userService.findOne(email);
 		if(user.getBalance()<tournament.getBuyIn()) {
 			return "views/topUp";
@@ -93,6 +101,7 @@ public class TournamentController {
 		else {
 		tournamentService.addUser(tournament, user);
 		return "views/successRegistration";
+		}
 		}
 		
 			
@@ -105,7 +114,7 @@ public class TournamentController {
 		
 		Long tournId = Long.parseLong(tournamentId);
 		Tournament tournament = tournamentService.getTournament(tournId);
-		List<Points> points = pointsService.findByTournament(tournament);
+		
 		Set<Fixture> fixtures = fixtureService.findTournamentFixtures(tournament);
 		model.addAttribute("fixtures", fixtures);
 		boolean finished = true;
@@ -115,6 +124,8 @@ public class TournamentController {
 			}
 			
 		}
+		pointsController.compareResults(tournament);
+		List<Points> points = pointsService.findByTournament(tournament);
 		if (finished&& tournament.getActive()==0) {
 			User winner = points.get(0).getUser();
 			User runnerUp = points.get(1).getUser();
@@ -126,10 +137,12 @@ public class TournamentController {
 			runnerUp.setBalance(runnerUp.getBalance()+ ((tournament.getPrizePool()*(0.25))));
 			userService.saveUser(winner);
 			userService.saveUser(runnerUp);
+			mailService.sendMail(winner.getEmail(),tournament.getPrizePool()*(0.75),tournament.getName());
+			mailService.sendMail(runnerUp.getEmail(),tournament.getPrizePool()*(0.25),tournament.getName());
 			tournament.setActive(1);
 			tournamentService.saveTournament(tournament);
 		}
-		pointsController.compareResults(tournament);
+		
 		
 		model.addAttribute("points", points);
 		model.addAttribute("tournamentId", tournId);

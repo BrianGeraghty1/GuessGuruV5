@@ -17,7 +17,7 @@
 		</div>
 		</br>
 		<div class="card">
-			<div class="card card-body">
+			<div class="card card-body" sec:authorize="hasRole('ROLE_USER')">
 				<table class="table table-hover table-striped table-bordered">
 					<h3>List of Tournaments You Are Currently Registered In</h3>
 					<thead>
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<div class="container" sec:authorize="hasRole('ROLE_USER')">
 			<h2 align="center" style="color:white">Your Balance Since Registering</h2>
 
 			<div id="container"
